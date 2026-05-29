@@ -1,4 +1,4 @@
-ImageArtBorder (macOS / Linux) v0.3.0
+ImageArtBorder (macOS / Linux) v1.0.0
 ======================================
 Author: Júlio Papel  info@juliopapel.pt
 License: MIT

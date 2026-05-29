@@ -1,4 +1,4 @@
-ImageArtBorder v0.3.0
+ImageArtBorder v1.0.0
 ====================
 Author: Júlio Papel
 Email:  info@juliopapel.pt

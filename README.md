@@ -1,6 +1,6 @@
 # ImageArtBorder
 
-**Version 0.3.0** · **Author:** [Júlio Papel](mailto:info@juliopapel.pt) · **License:** [MIT](LICENSE)
+**Version 1.0.0** · **Author:** [Júlio Papel](mailto:info@juliopapel.pt) · **License:** [MIT](LICENSE)
 
 CLI that adds a **solid-color border** around photos by **expanding the canvas** (your image stays full size in the center—no downscaling). Border width scales with each file as a **% of the diagonal** (default **6%**). Built for **Capture One** exports and in-place **JPEG / PNG / TIFF** processing, with **best-effort metadata preservation**.
 
@@ -26,7 +26,7 @@ Unzip, then follow [docs/installation.md](docs/installation.md).
 **Windows** (installs to `C:\Tools\ImageArtBorder` by default)
 
 ```powershell
-cd ImageArtBorder-0.3.0-windows-x64
+cd ImageArtBorder-1.0.0-windows-x64
 powershell -ExecutionPolicy Bypass -File .\install.ps1
 ImageArtBorder.exe -b 6 -c "#FFFFFF" -f "C:\path\to\photo.jpg"
 ```
@@ -34,7 +34,7 @@ ImageArtBorder.exe -b 6 -c "#FFFFFF" -f "C:\path\to\photo.jpg"
 **macOS / Linux** (installs to `~/.local/bin`)
 
 ```bash
-cd ImageArtBorder-0.3.0-macos-arm64   # or linux-x64 / macos-x64
+cd ImageArtBorder-1.0.0-macos-arm64   # or linux-x64 / macos-x64
 chmod +x ImageArtBorder *.sh
 ./install.sh
 ImageArtBorder -b 6 -c "#FFFFFF" -f ~/Pictures/photo.jpg
@@ -94,8 +94,8 @@ If PowerShell blocks `.ps1` scripts, use the `.bat` launchers above or run:
 Push a version tag to build all platforms and publish release zips:
 
 ```bash
-git tag v0.3.0
-git push origin v0.3.0
+git tag v1.0.0
+git push origin v1.0.0
 ```
 
 See [docs/releasing.md](docs/releasing.md) and [.github/workflows/release.yml](.github/workflows/release.yml).

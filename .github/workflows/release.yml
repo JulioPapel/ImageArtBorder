@@ -3,7 +3,7 @@
 # Release a new version:
 #   1. Bump version in Cargo.toml + CHANGELOG.md
 #   2. git commit && git push origin main
-#   3. git tag v0.3.0 && git push origin v0.3.0
+#   3. git tag v1.0.0 && git push origin v1.0.0
 #
 # workflow_dispatch: builds artifacts only (no GitHub Release).
 

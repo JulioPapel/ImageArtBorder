@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.0] - 2026-05-29
+
+### Added
+
+- **v1.0.0** — first stable public release.
+- Automatic **GitHub Releases** on `v*` tags (four platform zip assets).
+- Cross-platform documentation and installers (Windows, macOS, Linux).
+
+### Changed
+
+- Version line reaches 1.0.0 after diagonal-percent borders, metadata preservation, and multi-platform packaging (see 0.1.0–0.3.0 below).
+
 ## [0.3.0] - 2026-05-29
 
 ### Added

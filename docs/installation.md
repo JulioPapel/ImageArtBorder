@@ -16,7 +16,7 @@ ImageArtBorder runs on **Windows 10+**, **macOS 11+**, and **Linux x64** (glibc)
 | Mac (M1/M2/M3…) | `ImageArtBorder-{version}-macos-arm64.zip` |
 | Mac (Intel) | `ImageArtBorder-{version}-macos-x64.zip` |
 
-3. Unzip to a folder you control (e.g. `Downloads\ImageArtBorder-0.3.0-windows-x64`).
+3. Unzip to a folder you control (e.g. `Downloads\ImageArtBorder-1.0.0-windows-x64`).
 4. Follow the OS section below.
 
 Each package includes `docs/`, `LICENSE`, `VERSION`, the binary, install scripts, and batch helpers.
@@ -60,7 +60,7 @@ C:\Tools\ImageArtBorder\ImageArtBorder.exe -b 6 -c "#FFFFFF" -f "C:\path\to\phot
 Use **arm64** on Apple Silicon, **x64** on Intel Macs.
 
 ```bash
-cd ~/Downloads/ImageArtBorder-0.3.0-macos-arm64   # adjust path and arch
+cd ~/Downloads/ImageArtBorder-1.0.0-macos-arm64   # adjust path and arch
 chmod +x ImageArtBorder *.sh
 ./install.sh
 ```
@@ -102,7 +102,7 @@ xattr -dr com.apple.quarantine /path/to/ImageArtBorder
 ## Linux
 
 ```bash
-cd ~/Downloads/ImageArtBorder-0.3.0-linux-x64
+cd ~/Downloads/ImageArtBorder-1.0.0-linux-x64
 chmod +x ImageArtBorder *.sh
 ./install.sh
 ```

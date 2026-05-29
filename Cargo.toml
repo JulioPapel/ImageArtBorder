@@ -1,6 +1,6 @@
 [package]
 name = "image-art-border"
-version = "0.3.0"
+version = "1.0.0"
 edition = "2021"
 description = "Add a colored border around images while preserving metadata and original pixels"
 license = "MIT"
