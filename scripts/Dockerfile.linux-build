@@ -1,0 +1,17 @@
+# One-shot Linux x64 release build (no host bind mount required).
+FROM rust:1-bookworm
+WORKDIR /build
+COPY Cargo.toml Cargo.lock ./
+COPY src ./src
+COPY vendor ./vendor
+COPY scripts/common-pack.sh scripts/build-linux-pack.sh ./scripts/
+COPY release/README-unix.txt release/install.sh release/uninstall.sh release/add-border.sh release/border-exported-images.sh ./release/
+COPY docs ./docs
+COPY LICENSE ./
+
+ENV CARGO_HTTP_CHECK_REVOCATION=false
+RUN cargo build --release
+
+RUN sed -i 's/\r$//' scripts/*.sh release/*.sh \
+    && chmod +x scripts/*.sh release/*.sh \
+    && bash scripts/build-linux-pack.sh

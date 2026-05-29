@@ -1,4 +1,6 @@
 /target/
+/release/dist/
+/release/zips/
 /release/ImageArtBorder/
 *.iab.tmp
 /*.jpg

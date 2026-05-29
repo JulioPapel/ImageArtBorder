@@ -1,6 +1,6 @@
 # Formats and preservation
 
-ImageArtBorder **expands** the image canvas and fills the new edge area with your border color. The original picture sits in the center; it is not scaled down to “fit inside a mat.”
+ImageArtBorder **expands** the image canvas and fills the new edge area with your border color. The original picture sits in the center; it is not scaled down to “fit inside a mat.” Behavior is the same on **Windows, macOS, and Linux**.
 
 ## What “preserved” means
 

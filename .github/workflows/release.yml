@@ -1,0 +1,99 @@
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  CARGO_HTTP_CHECK_REVOCATION: 'false'
+
+jobs:
+  build:
+    name: ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: windows-x64
+            target: x86_64-pc-windows-msvc
+            binary: ImageArtBorder.exe
+          - os: ubuntu-latest
+            platform: linux-x64
+            target: x86_64-unknown-linux-gnu
+            binary: ImageArtBorder
+          - os: macos-14
+            platform: macos-arm64
+            target: aarch64-apple-darwin
+            binary: ImageArtBorder
+          - os: macos-13
+            platform: macos-x64
+            target: x86_64-apple-darwin
+            binary: ImageArtBorder
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Build
+        shell: bash
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Pack Windows
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          $version = (Select-String -Path Cargo.toml -Pattern '^version = "(.+)"').Matches.Groups[1].Value
+          $out = "release/dist/ImageArtBorder-$version-${{ matrix.platform }}"
+          New-Item -ItemType Directory -Path $out/docs -Force | Out-Null
+          Copy-Item target/${{ matrix.target }}/release/${{ matrix.binary }} $out/
+          Set-Content $out/VERSION $version -NoNewline
+          Copy-Item LICENSE, release/README.txt, release/install.ps1, release/uninstall.ps1, release/Add-Border.bat, release/Border-ExportedImages.ps1 $out/
+          Copy-Item docs/*.md $out/docs/
+
+      - name: Pack Unix
+        if: matrix.os != 'windows-latest'
+        shell: bash
+        run: |
+          chmod +x scripts/common-pack.sh release/*.sh
+          bash scripts/common-pack.sh "${{ matrix.platform }}" "target/${{ matrix.target }}/release/${{ matrix.binary }}"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ImageArtBorder-${{ matrix.platform }}
+          path: release/dist/ImageArtBorder-*-${{ matrix.platform }}
+
+  merge:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - name: Zip release folders
+        run: |
+          mkdir -p release-zips
+          for dir in artifacts/ImageArtBorder-*; do
+            base="$(basename "$dir")"
+            (cd "$(dirname "$dir")" && zip -r "../../release-zips/${base}.zip" "$base")
+          done
+          ls -la release-zips
+
+      - uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          files: release-zips/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

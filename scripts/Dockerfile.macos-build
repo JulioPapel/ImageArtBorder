@@ -1,0 +1,32 @@
+# Cross-build macOS x64 + arm64 from Linux Docker (no Mac required).
+FROM rust:1-bookworm
+
+ARG ZIG_VERSION=0.13.0
+RUN apt-get update -qq \
+    && apt-get install -y -qq curl ca-certificates xz-utils \
+    && curl -fL -o /tmp/zig.tar.xz "https://ziglang.org/download/${ZIG_VERSION}/zig-linux-x86_64-${ZIG_VERSION}.tar.xz" \
+    && tar xJf /tmp/zig.tar.xz -C /opt \
+    && ln -sf "/opt/zig-linux-x86_64-${ZIG_VERSION}/zig" /usr/local/bin/zig \
+    && zig version \
+    && rm /tmp/zig.tar.xz
+
+RUN cargo install cargo-zigbuild --locked
+
+WORKDIR /build
+ENV CARGO_HTTP_CHECK_REVOCATION=false
+
+COPY Cargo.toml Cargo.lock ./
+COPY src ./src
+COPY vendor ./vendor
+COPY scripts/common-pack.sh scripts/build-macos-pack.sh ./scripts/
+COPY release/README-unix.txt release/install.sh release/uninstall.sh release/add-border.sh release/border-exported-images.sh ./release/
+COPY docs ./docs
+COPY LICENSE ./
+
+RUN rustup target add aarch64-apple-darwin x86_64-apple-darwin \
+    && cargo zigbuild --release --target aarch64-apple-darwin \
+    && cargo zigbuild --release --target x86_64-apple-darwin
+
+RUN sed -i 's/\r$//' scripts/*.sh release/*.sh \
+    && chmod +x scripts/*.sh release/*.sh \
+    && bash scripts/build-macos-pack.sh

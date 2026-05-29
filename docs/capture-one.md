@@ -11,13 +11,12 @@ This matches a typical studio flow: Capture One produces the final RGB file; Ima
 
 ## Step 1 — Install ImageArtBorder
 
-See [installation.md](installation.md). Note the full path to `ImageArtBorder.exe`, for example:
+See [installation.md](installation.md). Download the zip for your OS from [GitHub Releases](https://github.com/JulioPapel/ImageArtBorder/releases), then run the installer.
 
-```text
-C:\Tools\ImageArtBorder\ImageArtBorder.exe
-```
-
-(Install with `install.ps1` from the release package — see [installation.md](installation.md).)
+| OS | Installer | Typical command path |
+|----|-----------|----------------------|
+| Windows | `install.ps1` | `C:\Tools\ImageArtBorder\ImageArtBorder.exe` |
+| macOS / Linux | `install.sh` | `~/.local/bin/ImageArtBorder` |
 
 ---
 
@@ -57,9 +56,9 @@ All files land in your output folder **without** a border yet.
 
 ## Step 3 — Add borders after export (recommended)
 
-### Option A — PowerShell batch script (best for many files)
+### Option A — Batch script on the export folder (best for many files)
 
-Edit `Border-ExportedImages.ps1` in the release folder if needed, then run:
+**Windows**
 
 ```powershell
 & "C:\Tools\ImageArtBorder\Border-ExportedImages.ps1" `
@@ -74,15 +73,28 @@ Preview first:
 & "C:\Tools\ImageArtBorder\Border-ExportedImages.ps1" -Folder "D:\CaptureOne\Exports\Finals" -WhatIf
 ```
 
-### Option B — One file with the launcher batch file
+**macOS / Linux** (from the release folder or after `install.sh`)
 
-After a single export, drag the file onto **`Add-Border.bat`** (configure default `-b` and `-c` inside the batch file), or run:
+```bash
+./border-exported-images.sh ~/CaptureOne/Exports/Finals
+./border-exported-images.sh ~/CaptureOne/Exports/Finals 6 "#FFFFFF"
+```
+
+### Option B — One file (Windows)
+
+After a single export, drag the file onto **`Add-Border.bat`** (edit default `-b` and `-c` inside the file), or run:
 
 ```cmd
 "C:\Tools\ImageArtBorder\Add-Border.bat" "D:\CaptureOne\Exports\Finals\image.jpg"
 ```
 
-### Option C — “Open With” for single images only
+On macOS/Linux, run the CLI on one file:
+
+```bash
+ImageArtBorder -b 6 -c "#FFFFFF" -f ~/CaptureOne/Exports/Finals/image.jpg
+```
+
+### Option C — “Open With” for single images (Windows only)
 
 Only practical for **one image at a time**:
 
@@ -92,7 +104,7 @@ Only practical for **one image at a time**:
    ```
 2. In the export recipe, set **Open With** to that batch file *(if Capture One lists it)*.
 
-Capture One may not pass file paths to all “Open With” targets on Windows; if the border does not run, use Option A instead.
+Capture One may not pass file paths to all “Open With” targets; if the border does not run, use Option A instead.
 
 ---
 
@@ -122,7 +134,7 @@ For hands-free runs after each export session:
 | 2 | Output folder: fixed path you control |
 | 3 | Open With: **off** for batches |
 | 4 | Export variants |
-| 5 | Run `Border-ExportedImages.ps1` on that folder |
+| 5 | Run batch script on that folder (`Border-ExportedImages.ps1` or `border-exported-images.sh`) |
 | 6 | Deliver bordered files from the same folder |
 
 ---

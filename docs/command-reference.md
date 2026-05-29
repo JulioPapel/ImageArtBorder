@@ -1,8 +1,10 @@
 # Command reference
 
 ```text
-ImageArtBorder.exe [OPTIONS] [IMAGE_PATH]
+ImageArtBorder [OPTIONS] [IMAGE_PATH]
 ```
+
+On Windows the executable is named `ImageArtBorder.exe`; options are identical on macOS and Linux.
 
 ## Options
 
@@ -23,23 +25,33 @@ ImageArtBorder.exe [OPTIONS] [IMAGE_PATH]
 
 ### `-h`, `--help` / `-V`, `--version`
 
-- Help and version (includes semver from the build).
+- Help and version (semver from the build).
 
 ## Examples
 
-Default (6% diagonal, white):
+**Windows — default (6% diagonal, white)**
 
 ```powershell
 ImageArtBorder.exe -f ".\photo.jpg"
 ```
 
-10% diagonal, black border:
+**Windows — 10% diagonal, black**
 
 ```powershell
 ImageArtBorder.exe -b 10 -c "#000000" ".\photo.jpg"
 ```
 
-## `Border-ExportedImages.ps1`
+**macOS / Linux**
+
+```bash
+ImageArtBorder -f ./photo.jpg
+ImageArtBorder -b 10 -c "#000000" ./photo.jpg
+./border-exported-images.sh ~/Exports/Finals
+```
+
+## Batch scripts
+
+### Windows — `Border-ExportedImages.ps1`
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
@@ -48,6 +60,24 @@ ImageArtBorder.exe -b 10 -c "#000000" ".\photo.jpg"
 | `-Color` | `#FFFFFF` | Border color |
 | `-Exe` | script folder | Path to `ImageArtBorder.exe` |
 | `-WhatIf` | — | List files only |
+
+### macOS / Linux — `border-exported-images.sh`
+
+```bash
+./border-exported-images.sh <folder> [border_percent] [color_hex]
+```
+
+| Argument | Default | Description |
+|----------|---------|-------------|
+| `folder` | (required) | Directory to scan |
+| `border_percent` | `6` | Same as `-b` |
+| `color_hex` | `#FFFFFF` | Same as `-c` |
+
+Example:
+
+```bash
+./border-exported-images.sh ~/Exports/Finals 8 "#000000"
+```
 
 ## Author
 

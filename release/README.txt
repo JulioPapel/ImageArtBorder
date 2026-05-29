@@ -1,4 +1,4 @@
-ImageArtBorder v0.2.1
+ImageArtBorder v0.3.0
 ====================
 Author: Júlio Papel
 Email:  info@juliopapel.pt
@@ -25,11 +25,17 @@ UNINSTALL
 ---------
   powershell -ExecutionPolicy Bypass -File C:\Tools\ImageArtBorder\uninstall.ps1
 
+DOWNLOAD / OTHER PLATFORMS
+--------------------------
+  https://github.com/JulioPapel/ImageArtBorder/releases
+  (Linux, macOS arm64, macOS x64)
+
 DOCUMENTATION
 -------------
   docs\README.md
   docs\installation.md
   docs\capture-one.md
   docs\usage.md
+  docs\troubleshooting.md
 
 SUPPORT: info@juliopapel.pt

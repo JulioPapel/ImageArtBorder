@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.3.0] - 2026-05-29
+
+### Added
+
+- **macOS** (x64 + Apple Silicon) and **Linux x64** native binaries.
+- Platform release folders: `release/dist/ImageArtBorder-{version}-{platform}/`
+- Unix scripts: `install.sh`, `add-border.sh`, `border-exported-images.sh`
+- `scripts/build-linux.sh`, `scripts/build-macos.sh`, `release/build-all.ps1`
+- GitHub Actions workflow (`.github/workflows/release.yml`) for all platforms
+
+### Changed
+
+- Windows pack output moved to `release/dist/ImageArtBorder-{version}-windows-x64/` (legacy `release/ImageArtBorder/` still created for install scripts).
+
 ## [0.2.1] - 2026-05-29
 
 ### Added
@@ -13,8 +27,6 @@
 ### Changed
 
 - **Border sizing** is now a **percentage of the image diagonal** (default **6.0**), not a fixed pixel width.
-  - `-b 6` means the new diagonal is **6% longer** than the original (uniform border on all sides).
-  - The tool prints the computed pixel border and actual diagonal change per file.
 
 ### Added
 
