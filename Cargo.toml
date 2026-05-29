@@ -1,0 +1,25 @@
+[package]
+name = "image-art-border"
+version = "0.1.0"
+edition = "2021"
+description = "Add a colored border around images while preserving metadata and original pixels"
+license = "MIT"
+authors = ["Júlio Papel <info@juliopapel.pt>"]
+
+[[bin]]
+name = "ImageArtBorder"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "tiff"] }
+img-parts = "0.3"
+jpeg-decoder = "0.3"
+jpeg-encoder = { path = "vendor/jpeg-encoder-0.6.1" }
+rgb = "0.8"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true

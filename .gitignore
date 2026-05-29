@@ -1,0 +1,7 @@
+/target/
+/release/ImageArtBorder/
+*.iab.tmp
+/*.jpg
+/*.jpeg
+/*.png
+/*.bak
