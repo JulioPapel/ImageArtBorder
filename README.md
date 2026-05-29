@@ -89,7 +89,16 @@ Zip for GitHub: `.\release\pack-zips.bat` → `release/zips/*.zip`
 If PowerShell blocks `.ps1` scripts, use the `.bat` launchers above or run:  
 `powershell -ExecutionPolicy Bypass -File .\release\build-all.ps1`
 
-CI builds all platforms on `v*` tags — [.github/workflows/release.yml](.github/workflows/release.yml).
+### Automatic GitHub Releases
+
+Push a version tag to build all platforms and publish release zips:
+
+```bash
+git tag v0.3.0
+git push origin v0.3.0
+```
+
+See [docs/releasing.md](docs/releasing.md) and [.github/workflows/release.yml](.github/workflows/release.yml).
 
 ## Developers
 

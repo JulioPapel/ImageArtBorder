@@ -1,10 +1,22 @@
+# Build all platforms and publish a GitHub Release when you push a version tag (v*).
+#
+# Release a new version:
+#   1. Bump version in Cargo.toml + CHANGELOG.md
+#   2. git commit && git push origin main
+#   3. git tag v0.3.0 && git push origin v0.3.0
+#
+# workflow_dispatch: builds artifacts only (no GitHub Release).
+
 name: Release
 
 on:
-  workflow_dispatch:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 env:
   CARGO_HTTP_CHECK_REVOCATION: 'false'
@@ -44,7 +56,6 @@ jobs:
       - uses: Swatinem/rust-cache@v2
 
       - name: Build
-        shell: bash
         run: cargo build --release --target ${{ matrix.target }}
 
       - name: Pack Windows
@@ -54,14 +65,13 @@ jobs:
           $version = (Select-String -Path Cargo.toml -Pattern '^version = "(.+)"').Matches.Groups[1].Value
           $out = "release/dist/ImageArtBorder-$version-${{ matrix.platform }}"
           New-Item -ItemType Directory -Path $out/docs -Force | Out-Null
-          Copy-Item target/${{ matrix.target }}/release/${{ matrix.binary }} $out/
+          Copy-Item "target/${{ matrix.target }}/release/${{ matrix.binary }}" $out/
           Set-Content $out/VERSION $version -NoNewline
           Copy-Item LICENSE, release/README.txt, release/install.ps1, release/uninstall.ps1, release/Add-Border.bat, release/Border-ExportedImages.ps1 $out/
           Copy-Item docs/*.md $out/docs/
 
       - name: Pack Unix
         if: matrix.os != 'windows-latest'
-        shell: bash
         run: |
           chmod +x scripts/common-pack.sh release/*.sh
           bash scripts/common-pack.sh "${{ matrix.platform }}" "target/${{ matrix.target }}/release/${{ matrix.binary }}"
@@ -71,29 +81,75 @@ jobs:
         with:
           name: ImageArtBorder-${{ matrix.platform }}
           path: release/dist/ImageArtBorder-*-${{ matrix.platform }}
+          retention-days: 5
 
-  merge:
+  publish:
+    name: GitHub Release
     needs: build
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+
     steps:
+      - uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         with:
           path: artifacts
           merge-multiple: true
 
-      - name: Zip release folders
+      - name: Zip packages
         run: |
+          set -euo pipefail
           mkdir -p release-zips
-          for dir in artifacts/ImageArtBorder-*; do
+          found=0
+          for dir in artifacts/*/ImageArtBorder-*; do
+            [ -d "$dir" ] && [ -f "$dir/VERSION" ] || continue
             base="$(basename "$dir")"
-            (cd "$(dirname "$dir")" && zip -r "../../release-zips/${base}.zip" "$base")
+            echo "Zipping $dir"
+            (cd "$(dirname "$dir")" && zip -r "$GITHUB_WORKSPACE/release-zips/${base}.zip" "$base")
+            found=$((found + 1))
           done
-          ls -la release-zips
+          if [ "$found" -lt 1 ]; then
+            echo "::error::No release folders found under artifacts/"
+            find artifacts | head -80
+            exit 1
+          fi
+          ls -la release-zips/
 
-      - uses: softprops/action-gh-release@v2
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Changelog excerpt for release body
+        id: changelog
+        run: |
+          TAG="${{ github.ref_name }}"
+          VER="${TAG#v}"
+          FILE="${RUNNER_TEMP}/release-notes.md"
+          {
+            echo "Cross-platform CLI to add solid-color borders to photos (Capture One exports and more). Expands the canvas; preserves metadata where the format allows."
+            echo ""
+            echo "**Windows** builds are tested in production. **macOS and Linux** packages are included but may not yet be verified on every system—feedback welcome."
+            echo ""
+            echo "### Downloads"
+            echo "| Platform | Zip |"
+            echo "|----------|-----|"
+            echo "| Windows x64 | \`ImageArtBorder-${VER}-windows-x64.zip\` |"
+            echo "| Linux x64 | \`ImageArtBorder-${VER}-linux-x64.zip\` |"
+            echo "| macOS Apple Silicon | \`ImageArtBorder-${VER}-macos-arm64.zip\` |"
+            echo "| macOS Intel | \`ImageArtBorder-${VER}-macos-x64.zip\` |"
+            echo ""
+          } > "$FILE"
+          if [ -f CHANGELOG.md ]; then
+            awk -v ver="$VER" '
+              $0 ~ "^## \\[" ver "\\]" { show=1; next }
+              show && /^## \[/ { exit }
+              show { print }
+            ' CHANGELOG.md >> "$FILE" || true
+          fi
+          echo "path=$FILE" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
+          name: ImageArtBorder ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          body_path: ${{ steps.changelog.outputs.path }}
           files: release-zips/*.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_unmatched_files: true

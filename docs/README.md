@@ -48,6 +48,7 @@ Default: **6%** longer diagonal, **white** border, file updated **in place**.
 - **[Command reference](command-reference.md)** — `-b`, `-c`, `-f`, `--version`
 - **[Formats and preservation](formats-and-preservation.md)** — JPEG / PNG / TIFF
 - **[Troubleshooting](troubleshooting.md)** — Windows, macOS, Linux
+- **[Releasing](releasing.md)** — tag push → automatic GitHub Release (maintainers)
 
 ## Platform notes
 
