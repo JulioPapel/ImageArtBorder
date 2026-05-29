@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.1] - 2026-05-29
+
+### Added
+
+- **`install.ps1`** / **`uninstall.ps1`** — install to `C:\Tools\ImageArtBorder` (default) with optional `-AddToUserPath`.
+- **`VERSION`** file in the release package.
+- Documentation refresh for installer and standard install location.
+
 ## [0.2.0] - 2026-05-29
 
 ### Changed

@@ -1,31 +1,35 @@
-ImageArtBorder
-================
+ImageArtBorder v0.2.1
+====================
 Author: Júlio Papel
 Email:  info@juliopapel.pt
 License: MIT (free) — see LICENSE
 
-Adds a solid-color border around JPEG, PNG, and TIFF images.
-Designed for workflows with Capture One and other export tools.
+INSTALL (recommended)
+-------------------
+  powershell -ExecutionPolicy Bypass -File .\install.ps1
+
+  Installs to: C:\Tools\ImageArtBorder
+  Optional PATH:  .\install.ps1 -AddToUserPath
 
 QUICK START
 -----------
-1. Run ImageArtBorder.exe --help
-2. Single file:
-     ImageArtBorder.exe -b 6 -c "#FFFFFF" -f "C:\path\to\photo.jpg"
-3. Whole export folder (Capture One):
-     Border-ExportedImages.ps1 -Folder "C:\Exports\Finals" -Border 6 -Color "#FFFFFF"
-     (-b 6 = diagonal 6% longer than original)
+  C:\Tools\ImageArtBorder\ImageArtBorder.exe --version
+  C:\Tools\ImageArtBorder\ImageArtBorder.exe -b 6 -c "#FFFFFF" -f "C:\path\to\photo.jpg"
+
+  Capture One export folder:
+  C:\Tools\ImageArtBorder\Border-ExportedImages.ps1 -Folder "D:\Exports\Finals" -Border 6
+
+  (-b 6 = image diagonal 6% longer; pixel border varies by image size)
+
+UNINSTALL
+---------
+  powershell -ExecutionPolicy Bypass -File C:\Tools\ImageArtBorder\uninstall.ps1
 
 DOCUMENTATION
 -------------
-Open the "docs" subfolder:
-  docs\README.md           — index
-  docs\installation.md     — install
-  docs\capture-one.md      — Capture One export recipe workflow
-  docs\usage.md            — daily usage
-  docs\command-reference.md
-  docs\troubleshooting.md
+  docs\README.md
+  docs\installation.md
+  docs\capture-one.md
+  docs\usage.md
 
-SUPPORT
--------
-info@juliopapel.pt
+SUPPORT: info@juliopapel.pt

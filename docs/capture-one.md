@@ -17,6 +17,8 @@ See [installation.md](installation.md). Note the full path to `ImageArtBorder.ex
 C:\Tools\ImageArtBorder\ImageArtBorder.exe
 ```
 
+(Install with `install.ps1` from the release package — see [installation.md](installation.md).)
+
 ---
 
 ## Step 2 — Create an export recipe in Capture One

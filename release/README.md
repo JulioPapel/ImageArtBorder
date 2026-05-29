@@ -1,30 +1,24 @@
 # Release packaging
 
-This folder contains scripts to build the **distributable** `ImageArtBorder` package for end users.
+## Build release
 
-## Create the release
-
-From the **project root**:
+From the project root:
 
 ```powershell
-.\release\pack-release.ps1
+powershell -ExecutionPolicy Bypass -File .\release\pack-release.ps1
 ```
 
-Output directory:
+Output: `release\ImageArtBorder\` (exe, scripts, docs, `VERSION`).
 
-```text
-release\ImageArtBorder\
-  ImageArtBorder.exe
-  Add-Border.bat
-  Border-ExportedImages.ps1
-  LICENSE
-  README.txt
-  docs\          (copied from project docs\)
+## Install to `C:\Tools\ImageArtBorder`
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\release\ImageArtBorder\install.ps1
+powershell -ExecutionPolicy Bypass -File .\release\ImageArtBorder\install.ps1 -AddToUserPath
 ```
 
-Zip `release\ImageArtBorder` for distribution.
+## Distribute
 
-## Author
+Zip the folder `release\ImageArtBorder` for end users. They run `install.ps1` after extracting.
 
-**Júlio Papel** — [info@juliopapel.pt](mailto:info@juliopapel.pt)  
-**License:** MIT
+**Júlio Papel** — info@juliopapel.pt
