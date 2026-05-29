@@ -6,82 +6,49 @@ ImageArtBorder.exe [OPTIONS] [IMAGE_PATH]
 
 ## Options
 
-### `-b`, `--border <PIXELS>`
+### `-b`, `--border <PERCENT>`
 
-- Border thickness on **each** of the four sides.
-- Default: `40`
-- Type: positive integer (pixels).
+- **Percentage increase of the image diagonal** (not pixels per side).
+- Default: `6.0`
+- Example: `-b 6` → new diagonal ≈ 106% of the original.
+- Must be ≥ 0. Values above 100 are rejected with a warning.
 
 ### `-c`, `--color <HEX>`
 
-- Border fill color.
-- Default: `#FFFFFF` (white)
-- Forms: `#RRGGBB` or `#AARRGGBB` (alpha is not used for the border fill).
+- Border color: `#RRGGBB` or `#AARRGGBB` (default `#FFFFFF`).
 
 ### `-f`, `--file <PATH>`
 
-- Path to the image to process.
-- Optional if `IMAGE_PATH` is passed as the last argument.
+- Input image (optional if path is the last argument).
 
-### `-h`, `--help`
+### `-h`, `--help` / `-V`, `--version`
 
-- Show help and exit.
-
-## Positional argument
-
-### `IMAGE_PATH`
-
-- Same as `-f`. If both are given, **`-f` takes precedence**.
-
-## Supported file types
-
-| Extension | Support |
-|-----------|---------|
-| `.jpg`, `.jpeg`, `.jfif` | Yes |
-| `.png` | Yes |
-| `.tif`, `.tiff` | Yes |
-| `.jxl`, `.jpxl` | Not yet |
-
-Format is detected from the file extension.
+- Help and version (includes semver from the build).
 
 ## Examples
 
-White border, 40 px (defaults except file):
+Default (6% diagonal, white):
 
 ```powershell
 ImageArtBorder.exe -f ".\photo.jpg"
 ```
 
-Black border, 20 px:
+10% diagonal, black border:
 
 ```powershell
-ImageArtBorder.exe -b 20 -c "#000000" ".\photo.jpg"
+ImageArtBorder.exe -b 10 -c "#000000" ".\photo.jpg"
 ```
 
-Cream border, 60 px:
+## `Border-ExportedImages.ps1`
 
-```powershell
-ImageArtBorder.exe -b 60 -c "#F8F4ED" -f "D:\Exports\AP20221112190503.jpg"
-```
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `-Folder` | (required) | Export directory |
+| `-Border` | `6` | Diagonal percent (same as `-b`) |
+| `-Color` | `#FFFFFF` | Border color |
+| `-Exe` | script folder | Path to `ImageArtBorder.exe` |
+| `-WhatIf` | — | List files only |
 
-## Related scripts (release package)
+## Author
 
-### `Border-ExportedImages.ps1`
-
-| Parameter | Required | Default | Description |
-|-----------|----------|---------|-------------|
-| `-Folder` | Yes | — | Directory to scan |
-| `-Border` | No | `40` | Pixels per side |
-| `-Color` | No | `#FFFFFF` | Border color |
-| `-Exe` | No | script directory | Path to `ImageArtBorder.exe` |
-| `-WhatIf` | No | — | List files only |
-
-### `Add-Border.bat`
-
-- Drag-and-drop or `Add-Border.bat "path\to\file.jpg"`
-- Edit `BORDER` and `COLOR` variables inside the file.
-
-## Author and license
-
-**Júlio Papel** — info@juliopapel.pt  
-**License:** MIT — see `LICENSE` in the release folder.
+**Júlio Papel** — info@juliopapel.pt · **License:** MIT

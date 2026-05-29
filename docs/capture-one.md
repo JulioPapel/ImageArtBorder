@@ -62,7 +62,7 @@ Edit `Border-ExportedImages.ps1` in the release folder if needed, then run:
 ```powershell
 & "C:\Tools\ImageArtBorder\Border-ExportedImages.ps1" `
   -Folder "D:\CaptureOne\Exports\Finals" `
-  -Border 40 `
+  -Border 6 `
   -Color "#FFFFFF"
 ```
 
@@ -86,7 +86,7 @@ Only practical for **one image at a time**:
 
 1. Create a small launcher, e.g. `OpenWith-Border.bat`:
    ```bat
-   @"C:\Tools\ImageArtBorder\ImageArtBorder.exe" -b 40 -c "#FFFFFF" -f "%~1"
+   @"C:\Tools\ImageArtBorder\ImageArtBorder.exe" -b 6 -c "#FFFFFF" -f "%~1"
    ```
 2. In the export recipe, set **Open With** to that batch file *(if Capture One lists it)*.
 
@@ -103,7 +103,7 @@ For hands-free runs after each export session:
 
    ```powershell
    while ($true) {
-     & "C:\Tools\ImageArtBorder\Border-ExportedImages.ps1" -Folder "D:\CaptureOne\Exports\Finals" -Border 40 -Color "#FFFFFF"
+     & "C:\Tools\ImageArtBorder\Border-ExportedImages.ps1" -Folder "D:\CaptureOne\Exports\Finals" -Border 6 -Color "#FFFFFF"
      Start-Sleep -Seconds 60
    }
    ```
@@ -127,10 +127,11 @@ For hands-free runs after each export session:
 
 ## Border size and print
 
-`-b 40` means **40 pixels per side**, not millimeters. For a known print width:
+`-b 6` means the **diagonal grows by 6%** (not 6 pixels). Border width in pixels depends on image size:
 
-- Example: 40 px on a 3000 px-wide export ≈ 1.3% of width per side.
-- For exhibition prints, test one file and measure in your viewer before batching hundreds of images.
+- A 3393×2500 export gets a wider pixel border than an 800×600 proof.
+- Run one test file and read the stderr line (`border Npx/side`) before batching hundreds of images.
+- For a different look, try `-b 4` or `-b 8`.
 
 ---
 

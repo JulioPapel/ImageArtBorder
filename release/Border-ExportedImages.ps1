@@ -13,7 +13,7 @@
     Directory containing exported images.
 
 .PARAMETER Border
-    Border width in pixels on each side (default 40).
+    Diagonal percent increase, same as -b (default 6.0).
 
 .PARAMETER Color
     Border color as #RRGGBB (default #FFFFFF).
@@ -29,7 +29,7 @@ param(
     [Parameter(Mandatory = $true)]
     [string] $Folder,
 
-    [int] $Border = 40,
+    [double] $Border = 6.0,
 
     [string] $Color = "#FFFFFF",
 
@@ -59,7 +59,7 @@ if ($files.Count -eq 0) {
 }
 
 Write-Host "ImageArtBorder batch - $($files.Count) file(s)"
-Write-Host "  Border: $Border px   Color: $Color"
+Write-Host "  Border: $Border% diagonal   Color: $Color"
 Write-Host "  Folder: $Folder"
 Write-Host ""
 

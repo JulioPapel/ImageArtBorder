@@ -26,7 +26,7 @@
 ## Typical command
 
 ```powershell
-ImageArtBorder.exe -b 40 -c "#FFFFFF" -f "D:\Exports\photo.jpg"
+ImageArtBorder.exe -b 6 -c "#FFFFFF" -f "D:\Exports\photo.jpg"
 ```
 
-Default border is **40 pixels** on each side, color **white** (`#FFFFFF`). The file is updated in place (a temporary file is used, then renamed).
+Default border is **6%** of the image diagonal (new diagonal is 6% longer), color **white** (`#FFFFFF`). The file is updated in place (a temporary file is used, then renamed).

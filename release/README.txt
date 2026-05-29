@@ -11,9 +11,10 @@ QUICK START
 -----------
 1. Run ImageArtBorder.exe --help
 2. Single file:
-     ImageArtBorder.exe -b 40 -c "#FFFFFF" -f "C:\path\to\photo.jpg"
+     ImageArtBorder.exe -b 6 -c "#FFFFFF" -f "C:\path\to\photo.jpg"
 3. Whole export folder (Capture One):
-     Border-ExportedImages.ps1 -Folder "C:\Exports\Finals" -Border 40 -Color "#FFFFFF"
+     Border-ExportedImages.ps1 -Folder "C:\Exports\Finals" -Border 6 -Color "#FFFFFF"
+     (-b 6 = diagonal 6% longer than original)
 
 DOCUMENTATION
 -------------

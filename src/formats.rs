@@ -7,9 +7,11 @@ use std::path::{Path, PathBuf};
 use anyhow::{bail, Context, Result};
 use image::codecs::png::{CompressionType, FilterType, PngEncoder};
 use image::codecs::tiff::TiffEncoder;
-use image::{ExtendedColorType, ImageEncoder};
+use image::{ExtendedColorType, GenericImageView, ImageEncoder};
+use jpeg_decoder::Decoder;
 
 use crate::border;
+use crate::border_calc::{diagonals, pixels_from_diagonal_percent};
 use crate::cli::{parse_color, Args};
 use crate::jpeg_encode;
 use crate::metadata::finalize_png;
@@ -25,12 +27,24 @@ enum ImageFormat {
 
 /// Read the input file, add a border, and replace the original atomically.
 pub fn process(args: &Args) -> Result<()> {
+    args.validate_border_percent()?;
     let path = args.image_path()?.to_path_buf();
-    let border_px = args.border;
     let color = parse_color(&args.color)?;
 
     let format = detect_format(&path)?;
     let source_bytes = fs::read(&path).with_context(|| format!("read {}", path.display()))?;
+
+    let (width, height) = image_dimensions(format, &source_bytes)?;
+    let border_px = pixels_from_diagonal_percent(width, height, args.border_percent);
+
+    if border_px > 0 {
+        let (d_old, d_new) = diagonals(width, height, border_px);
+        let pct_actual = (d_new / d_old - 1.0) * 100.0;
+        eprintln!(
+            "Image {}x{}: border {border_px}px/side ({:.1}% diagonal: {d_old:.0} -> {d_new:.0} px)",
+            width, height, pct_actual
+        );
+    }
 
     let output_bytes = match format {
         ImageFormat::Jpeg => jpeg_encode::process_jpeg(&source_bytes, border_px, color)?,
@@ -48,6 +62,22 @@ pub fn process(args: &Args) -> Result<()> {
 
     write_atomic(&path, &output_bytes)?;
     Ok(())
+}
+
+/// Image width and height before border is applied.
+fn image_dimensions(format: ImageFormat, source: &[u8]) -> Result<(u32, u32)> {
+    match format {
+        ImageFormat::Jpeg => {
+            let mut dec = Decoder::new(Cursor::new(source));
+            dec.read_info().context("read JPEG dimensions")?;
+            let info = dec.info().context("JPEG missing image info")?;
+            Ok((info.width as u32, info.height as u32))
+        }
+        _ => {
+            let img = image::load_from_memory(source).context("decode image for dimensions")?;
+            Ok(img.dimensions())
+        }
+    }
 }
 
 /// Write via a sibling `.iab.tmp` file, then rename over the original.

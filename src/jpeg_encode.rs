@@ -246,9 +246,10 @@ mod tests {
             }
         }
 
-        let out = process_jpeg(&source, 40, RGB8::new(255, 255, 255))?;
+        let border_pct = 6.0;
+        let b = crate::border_calc::pixels_from_diagonal_percent(w as u32, h as u32, border_pct) as usize;
+        let out = process_jpeg(&source, b as u32, RGB8::new(255, 255, 255))?;
         let (out_px, out_info) = decode_jpeg(&out)?;
-        let b = 40usize;
         let wi = w as usize;
         let hi = h as usize;
         let nw = out_info.width as usize;
@@ -292,8 +293,15 @@ mod tests {
         }
 
         let source = std::fs::read(&bak)?;
-        let out = process_jpeg(&source, 40, RGB8::new(255, 255, 255))?;
+        let (orig_px, info) = decode_jpeg(&source)?;
+        let b = crate::border_calc::pixels_from_diagonal_percent(
+            info.width as u32,
+            info.height as u32,
+            6.0,
+        );
+        let out = process_jpeg(&source, b, RGB8::new(255, 255, 255))?;
         let src_meta = metadata_segment_bytes(&source)?;
+        let _ = orig_px;
         let out_meta = metadata_segment_bytes(&out)?;
 
         assert_eq!(

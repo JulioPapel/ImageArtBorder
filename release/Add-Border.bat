@@ -6,7 +6,7 @@ REM Edit BORDER and COLOR below to match your studio defaults.
 setlocal
 set "TOOL_DIR=%~dp0"
 set "EXE=%TOOL_DIR%ImageArtBorder.exe"
-set "BORDER=40"
+set "BORDER=6"
 set "COLOR=#FFFFFF"
 
 if "%~1"=="" (

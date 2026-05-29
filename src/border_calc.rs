@@ -13,7 +13,6 @@ pub fn pixels_from_diagonal_percent(width: u32, height: u32, percent: f64) -> u3
     let w = width as f64;
     let h = height as f64;
     let d_sq = w * w + h * h;
-    let d = d_sq.sqrt();
     let scale = 1.0 + percent / 100.0;
     let target_d_sq = d_sq * scale * scale;
 

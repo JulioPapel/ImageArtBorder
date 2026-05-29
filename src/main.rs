@@ -7,6 +7,7 @@
 //! and copying the original pixel region without resampling.
 
 mod border;
+mod border_calc;
 mod cli;
 mod formats;
 mod jpeg_encode;

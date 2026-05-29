@@ -21,6 +21,8 @@ See the **[docs/](docs/)** folder:
 
 Pre-built files (after packaging): **[release/](release/)** — run `.\release\pack-release.ps1` from the project root.
 
+See **[CHANGELOG.md](CHANGELOG.md)** for version history.
+
 ## Developers
 
 ### Build

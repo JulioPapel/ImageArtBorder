@@ -1,4 +1,4 @@
-//! Command-line interface: border width, color, and input path.
+//! Command-line interface: border percent, color, and input path.
 
 use std::path::PathBuf;
 
@@ -16,9 +16,10 @@ use rgb::RGB8;
     disable_help_subcommand = true
 )]
 pub struct Args {
-    /// Border width in pixels on each side (default: 40)
-    #[arg(short = 'b', long = "border", default_value_t = 40)]
-    pub border: u32,
+    /// Border as a percentage increase of the image diagonal (default: 6.0).
+    /// Example: 6.0 makes the new diagonal 6% longer than the original.
+    #[arg(short = 'b', long = "border", default_value_t = 6.0)]
+    pub border_percent: f64,
 
     /// Border color as #RRGGBB or #AARRGGBB (default: #FFFFFF)
     #[arg(short = 'c', long = "color", default_value = "#FFFFFF")]
@@ -43,6 +44,20 @@ impl Args {
             return Ok(p.clone());
         }
         bail!("no image path: use -f <path> or put the image path as the last argument");
+    }
+
+    /// Validate border percentage from the CLI.
+    pub fn validate_border_percent(&self) -> Result<()> {
+        if self.border_percent < 0.0 {
+            bail!("border percent must be >= 0, got {}", self.border_percent);
+        }
+        if self.border_percent > 100.0 {
+            bail!(
+                "border percent above 100 is unusual; got {}. Use a value like 6 for 6%.",
+                self.border_percent
+            );
+        }
+        Ok(())
     }
 }
 

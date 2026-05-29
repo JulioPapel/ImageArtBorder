@@ -31,7 +31,7 @@ Then run the script again. Only change policy if you trust this package.
 ## Border looks wrong in Capture One export
 
 - Confirm you ran ImageArtBorder **after** export (see [capture-one.md](capture-one.md)).
-- Check **`-b`** (pixels, not mm). Test one file at 40 px, then adjust.
+- Check **`-b`** is a **percent of diagonal** (default `6`), not pixels. Test one file, then adjust.
 - Ensure **`-c`** is quoted in PowerShell.
 
 ## Image looks corrupted or solid color
